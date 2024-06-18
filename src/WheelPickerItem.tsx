@@ -11,7 +11,7 @@ interface ItemProps {
   rotationFunction: (x: number) => number;
   opacityFunction: (x: number) => number;
   scaleFunction: (x: number) => number;
-  children: React.ReactElement | null
+  children: React.ReactElement | null;
 }
 
 const WheelPickerItem: React.FC<ItemProps> = ({
@@ -23,7 +23,7 @@ const WheelPickerItem: React.FC<ItemProps> = ({
   opacityFunction,
   rotationFunction,
   scaleFunction,
-  children
+  children,
 }) => {
   const relativeScrollIndex = Animated.subtract(index, currentScrollIndex);
 
@@ -39,8 +39,7 @@ const WheelPickerItem: React.FC<ItemProps> = ({
     outputRange: (() => {
       const range = [0];
       for (let i = 1; i <= visibleRest + 1; i++) {
-        let y =
-          (height / 2) * (1 - Math.sin(Math.PI / 2 - rotationFunction(i)));
+        let y = (height / 2) * (1 - Math.sin(Math.PI / 2 - rotationFunction(i)));
         for (let j = 1; j < i; j++) {
           y += height * (1 - Math.sin(Math.PI / 2 - rotationFunction(j)));
         }
@@ -116,7 +115,11 @@ const WheelPickerItem: React.FC<ItemProps> = ({
       style={[
         styles.option,
         style,
-        {  height, opacity, transform: [{ translateY }, { rotateX }, { scale }]},
+        {
+          height,
+          opacity,
+          transform: [{ translateY }, { rotateX }, { scale }],
+        },
       ]}
     >
       {children}
@@ -124,4 +127,7 @@ const WheelPickerItem: React.FC<ItemProps> = ({
   );
 };
 
-export default WheelPickerItem
+export default React.memo(
+  WheelPickerItem,
+  () => true,
+);
