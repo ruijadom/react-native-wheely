@@ -109,7 +109,7 @@ const WheelPicker: React.FC<Props> = ({
   useEffect(() => {
     flatListRef.current?.scrollToIndex({
       index: selectedIndex,
-      animated: false,
+      animated: true,
     });
   }, [selectedIndex]);
 
