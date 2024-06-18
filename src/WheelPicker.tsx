@@ -99,12 +99,14 @@ const WheelPicker: React.FC<Props> = ({
   }, [selectedIndex, options]);
 
   useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({
+    const timer = setTimeout(() => {
+      flatListRef.current?.scrollToIndex({
         index: selectedIndex + visibleRest,
         animated: false,
       });
-    }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [selectedIndex, visibleRest]);
 
   return (
@@ -140,7 +142,7 @@ const WheelPicker: React.FC<Props> = ({
           index,
         })}
         data={paddedOptions}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({ item: option, index }) => (
           <WheelPickerItem
             key={`option-${index}`}
