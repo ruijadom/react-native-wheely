@@ -74,6 +74,9 @@ const WheelPicker: React.FC<Props> = ({
   const handleMomentumScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>,
   ) => {
+    // Due to list bounciness when scrolling to the start or the end of the list
+    // the offset might be negative or over the last item.
+    // We therefore clamp the offset to the supported range.
     const offsetY = Math.min(
       itemHeight * (options.length - 1),
       Math.max(event.nativeEvent.contentOffset.y, 0),
@@ -97,17 +100,6 @@ const WheelPicker: React.FC<Props> = ({
       );
     }
   }, [selectedIndex, options]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      flatListRef.current?.scrollToIndex({
-        index: selectedIndex + visibleRest,
-        animated: false,
-      });
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [selectedIndex, visibleRest]);
 
   return (
     <View
@@ -136,13 +128,19 @@ const WheelPicker: React.FC<Props> = ({
         onMomentumScrollEnd={handleMomentumScrollEnd}
         snapToOffsets={offsets}
         decelerationRate={decelerationRate}
+        onLayout={() => {
+          flatListRef.current?.scrollToIndex({
+            index: selectedIndex,
+            animated: false,
+          });
+        }}
         getItemLayout={(data, index) => ({
           length: itemHeight,
           offset: itemHeight * index,
           index,
         })}
         data={paddedOptions}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item: option, index }) => (
           <WheelPickerItem
             key={`option-${index}`}

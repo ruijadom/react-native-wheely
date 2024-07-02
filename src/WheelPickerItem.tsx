@@ -39,7 +39,8 @@ const WheelPickerItem: React.FC<ItemProps> = ({
     outputRange: (() => {
       const range = [0];
       for (let i = 1; i <= visibleRest + 1; i++) {
-        let y = (height / 2) * (1 - Math.sin(Math.PI / 2 - rotationFunction(i)));
+        let y =
+          (height / 2) * (1 - Math.sin(Math.PI / 2 - rotationFunction(i)));
         for (let j = 1; j < i; j++) {
           y += height * (1 - Math.sin(Math.PI / 2 - rotationFunction(j)));
         }
@@ -127,7 +128,4 @@ const WheelPickerItem: React.FC<ItemProps> = ({
   );
 };
 
-export default React.memo(
-  WheelPickerItem,
-  () => true,
-);
+export default WheelPickerItem;
