@@ -15,9 +15,9 @@ import WheelPickerItem from './WheelPickerItem';
 
 interface Props {
   selectedIndex: number;
-  options: string[];
+  options: any[];
   onChange: (index: number) => void;
-  renderItem: (option: string, index: number) => React.ReactElement | null;
+  renderItem: (option: any, index: number) => React.ReactElement | null;
   selectedIndicatorStyle?: StyleProp<ViewStyle>;
   itemStyle?: ViewStyle;
   itemHeight?: number;
@@ -53,7 +53,7 @@ const WheelPicker: React.FC<Props> = ({
 
   const containerHeight = (1 + visibleRest * 2) * itemHeight;
   const paddedOptions = useMemo(() => {
-    const array: (string | null)[] = [...options];
+    const array: (any | null)[] = [...options];
     for (let i = 0; i < visibleRest; i++) {
       array.unshift(null);
       array.push(null);
